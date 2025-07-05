@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const vehicleController = require('../controllers/vehicleController');
+const authenticate = require('../middlewares/auth');
+const { validateVehicle } = require('../middlewares/validation');
 
 /**
  * @swagger
@@ -38,7 +40,7 @@ const vehicleController = require('../controllers/vehicleController');
  *       400:
  *         description: Erreur de validation
  */
-router.post('/', vehicleController.createVehicle);
+router.post('/', authenticate, validateVehicle, vehicleController.createVehicle);
 
 /**
  * @swagger
@@ -50,7 +52,7 @@ router.post('/', vehicleController.createVehicle);
  *       200:
  *         description: Liste des véhicules
  */
-router.get('/', vehicleController.getAllVehicles);
+router.get('/', authenticate, vehicleController.getAllVehicles);
 
 /**
  * @swagger
@@ -70,7 +72,7 @@ router.get('/', vehicleController.getAllVehicles);
  *       404:
  *         description: Véhicule non trouvé
  */
-router.get('/:id', vehicleController.getVehicleById);
+router.get('/:id', authenticate, vehicleController.getVehicleById);
 
 /**
  * @swagger
@@ -96,7 +98,7 @@ router.get('/:id', vehicleController.getVehicleById);
  *       404:
  *         description: Véhicule non trouvé
  */
-router.put('/:id', vehicleController.updateVehicle);
+router.put('/:id', authenticate, vehicleController.updateVehicle);
 
 /**
  * @swagger
@@ -116,7 +118,7 @@ router.put('/:id', vehicleController.updateVehicle);
  *       404:
  *         description: Véhicule non trouvé
  */
-router.delete('/:id', vehicleController.deleteVehicle);
+router.delete('/:id', authenticate, vehicleController.deleteVehicle);
 
 /**
  * @swagger

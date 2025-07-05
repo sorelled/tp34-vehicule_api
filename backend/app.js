@@ -31,7 +31,7 @@ const swaggerOptions = {
       description: 'Documentation de l\'API Véhicules et Utilisateurs'
     },
     servers: [
-      { url: 'http://localhost:3000' }
+     
     ]
   },
   apis: [__dirname + '/routes/*.js'], // <-- Utilise __dirname pour le chemin absolu
@@ -55,3 +55,7 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+// export de l'app
+
+module.exports = app; 

@@ -2,10 +2,10 @@ const Vehicle = require('../models/Vehicle');
 
 module.exports = {
   // CREATE
-  async createVehicle(req, res) {
+   async createVehicle(req, res) {
     try {
-      const vehicle = await Vehicle.create(req.body);
-      res.status(201).json(vehicle);
+      const id = await Vehicle.create(req.body);
+      res.status(201).json({ id });
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
@@ -37,8 +37,9 @@ module.exports = {
   // UPDATE
   async updateVehicle(req, res) {
     try {
-      const vehicle = await Vehicle.update(req.params.id, req.body);
-      res.json(vehicle);
+      await Vehicle.update(req.params.id, req.body);
+      const updatedVehicle = await Vehicle.findById(req.params.id);
+      res.json(updatedVehicle);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
