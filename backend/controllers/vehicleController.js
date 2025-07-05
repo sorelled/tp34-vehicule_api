@@ -3,8 +3,7 @@ const Vehicle = require('../models/Vehicle');
 // Créer un véhicule
 exports.createVehicle = async (req, res) => {
   try {
-    const vehicle = new Vehicle(req.body);
-    await vehicle.save();
+    const vehicle = await Vehicle.create(req.body);
     res.status(201).json(vehicle);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -14,7 +13,7 @@ exports.createVehicle = async (req, res) => {
 // Obtenir tous les véhicules
 exports.getAllVehicles = async (req, res) => {
   try {
-    const vehicles = await Vehicle.find();
+    const vehicles = await Vehicle.findAll();
     res.json(vehicles);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -35,7 +34,7 @@ exports.getVehicleById = async (req, res) => {
 // Mettre à jour un véhicule
 exports.updateVehicle = async (req, res) => {
   try {
-    const vehicle = await Vehicle.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const vehicle = await Vehicle.update(req.params.id, req.body);
     if (!vehicle) return res.status(404).json({ error: 'Véhicule non trouvé' });
     res.json(vehicle);
   } catch (err) {
@@ -46,8 +45,7 @@ exports.updateVehicle = async (req, res) => {
 // Supprimer un véhicule
 exports.deleteVehicle = async (req, res) => {
   try {
-    const vehicle = await Vehicle.findByIdAndDelete(req.params.id);
-    if (!vehicle) return res.status(404).json({ error: 'Véhicule non trouvé' });
+    await Vehicle.delete(req.params.id);
     res.json({ message: 'Véhicule supprimé' });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -57,13 +55,7 @@ exports.deleteVehicle = async (req, res) => {
 // Rechercher des véhicules (par marque, modèle, année, etc.)
 exports.searchVehicles = async (req, res) => {
   try {
-    const query = {};
-    if (req.query.marque) query.marque = req.query.marque;
-    if (req.query.modele) query.modele = req.query.modele;
-    if (req.query.annee) query.annee = req.query.annee;
-    if (req.query.couleur) query.couleur = req.query.couleur;
-    if (req.query.immatriculation) query.immatriculation = req.query.immatriculation;
-    const vehicles = await Vehicle.find(query);
+    const vehicles = await Vehicle.search(req.query);
     res.json(vehicles);
   } catch (err) {
     res.status(500).json({ error: err.message });

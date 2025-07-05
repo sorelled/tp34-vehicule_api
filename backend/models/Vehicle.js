@@ -1,12 +1,43 @@
-const mongoose = require('mongoose');
+const pool = require('../config/db');
 
-const vehicleSchema = new mongoose.Schema({
-  marque: { type: String, required: true },
-  modele: { type: String, required: true },
-  annee: { type: Number, required: true },
-  couleur: { type: String },
-  immatriculation: { type: String, required: true, unique: true },
-  proprietaire: { type: String }
-}, { timestamps: true });
+// Fonctions utilitaires pour les requêtes SQL sur la table vehicles
+const Vehicle = {
+  create: async (data) => {
+    const [result] = await pool.query(
+      'INSERT INTO vehicles (marque, modele, annee, couleur, immatriculation, proprietaire) VALUES (?, ?, ?, ?, ?, ?)',
+      [data.marque, data.modele, data.annee, data.couleur, data.immatriculation, data.proprietaire]
+    );
+    return { id: result.insertId, ...data };
+  },
+  findAll: async () => {
+    const [rows] = await pool.query('SELECT * FROM vehicles');
+    return rows;
+  },
+  findById: async (id) => {
+    const [rows] = await pool.query('SELECT * FROM vehicles WHERE id = ?', [id]);
+    return rows[0];
+  },
+  update: async (id, data) => {
+    await pool.query(
+      'UPDATE vehicles SET marque=?, modele=?, annee=?, couleur=?, immatriculation=?, proprietaire=? WHERE id=?',
+      [data.marque, data.modele, data.annee, data.couleur, data.immatriculation, data.proprietaire, id]
+    );
+    return Vehicle.findById(id);
+  },
+  delete: async (id) => {
+    await pool.query('DELETE FROM vehicles WHERE id=?', [id]);
+  },
+  search: async (queryObj) => {
+    let sql = 'SELECT * FROM vehicles WHERE 1=1';
+    const params = [];
+    if (queryObj.marque) { sql += ' AND marque=?'; params.push(queryObj.marque); }
+    if (queryObj.modele) { sql += ' AND modele=?'; params.push(queryObj.modele); }
+    if (queryObj.annee) { sql += ' AND annee=?'; params.push(queryObj.annee); }
+    if (queryObj.couleur) { sql += ' AND couleur=?'; params.push(queryObj.couleur); }
+    if (queryObj.immatriculation) { sql += ' AND immatriculation=?'; params.push(queryObj.immatriculation); }
+    const [rows] = await pool.query(sql, params);
+    return rows;
+  }
+};
 
-module.exports = mongoose.model('Vehicle', vehicleSchema);
+module.exports = Vehicle;

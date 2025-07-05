@@ -3,8 +3,7 @@ const User = require('../models/User');
 // Créer un utilisateur
 exports.createUser = async (req, res) => {
   try {
-    const user = new User(req.body);
-    await user.save();
+    const user = await User.create(req.body);
     res.status(201).json(user);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -14,7 +13,7 @@ exports.createUser = async (req, res) => {
 // Obtenir tous les utilisateurs
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.findAll();
     res.json(users);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -35,7 +34,7 @@ exports.getUserById = async (req, res) => {
 // Mettre à jour un utilisateur
 exports.updateUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const user = await User.update(req.params.id, req.body);
     if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' });
     res.json(user);
   } catch (err) {
@@ -46,8 +45,7 @@ exports.updateUser = async (req, res) => {
 // Supprimer un utilisateur
 exports.deleteUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
-    if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' });
+    await User.delete(req.params.id);
     res.json({ message: 'Utilisateur supprimé' });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -57,12 +55,7 @@ exports.deleteUser = async (req, res) => {
 // Rechercher des utilisateurs (par nom, prénom, email, etc.)
 exports.searchUsers = async (req, res) => {
   try {
-    const query = {};
-    if (req.query.nom) query.nom = req.query.nom;
-    if (req.query.prenom) query.prenom = req.query.prenom;
-    if (req.query.email) query.email = req.query.email;
-    if (req.query.telephone) query.telephone = req.query.telephone;
-    const users = await User.find(query);
+    const users = await User.search(req.query);
     res.json(users);
   } catch (err) {
     res.status(500).json({ error: err.message });
