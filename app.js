@@ -2,12 +2,16 @@ const express = require('express');
 const cors = require('cors');
 const vehicleRoutes = require('./routes/vehicleRoutes');
 const userRoutes = require('./routes/userRoutes');
+const { swaggerUi, swaggerSpec } = require('./backend/config/swagger');
 
 const app = express();
 
 // Middlewares
 app.use(cors());
 app.use(express.json());
+
+// Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Routes
 app.use('/api/vehicles', vehicleRoutes);
