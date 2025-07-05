@@ -121,27 +121,6 @@ router.get('/:id', userController.getUserById);
 router.put('/:id', userController.updateUser);
 router.delete('/:id', userController.deleteUser);
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     User:
- *       type: object
- *       required:
- *         - nom
- *         - prenom
- *         - email
- *       properties:
- *         nom:
- *           type: string
- *         prenom:
- *           type: string
- *         email:
- *           type: string
- *         telephone:
- *           type: string
- *         adresse:
- *           type: string
- */
+
 
 module.exports = router;
