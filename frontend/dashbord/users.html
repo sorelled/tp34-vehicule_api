@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liste des Utilisateurs</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+      margin: 0;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      background: rgba(255,255,255,0.95);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      padding: 2rem;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #764ba2;
+    }
+    .btn {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+    .btn:hover {
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    th {
+      background: rgba(118, 75, 162, 0.1);
+      color: #333;
+    }
+    tr:hover {
+      background: rgba(118, 75, 162, 0.05);
+    }
+    .status-badge {
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    .status-active {
+      background: #c6f6d5;
+      color: #22543d;
+    }
+    .status-inactive {
+      background: #fed7cc;
+      color: #744210;
+    }
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .action-btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    .edit-btn {
+      background: #764ba2;
+      color: white;
+    }
+    .save-btn {
+      background: #48bb78;
+      color: white;
+    }
+    .cancel-btn {
+      background: #e53e3e;
+      color: white;
+    }
+    .action-btn:hover {
+      transform: scale(1.1);
+    }
+    input[type="text"], input[type="email"], select {
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 90%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Liste des Utilisateurs</h2>
+    <a href="dashbord.html" class="btn">Retour au Dashboard</a>
+    <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Rôle</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="userTableBody">
+        <tr>
+          <td>martinez</td>
+          <td>martinez@propelize.com</td>
+          <td>Conducteur</td>
+          <td><span class="status-badge status-active">Actif</span></td>
+          <td class="actions">
+            <button class="action-btn edit-btn">✏️ Modifier</button>
+          </td>
+        </tr>
+        <tr>
+          <td>sorrelle</td>
+          <td>sorrelle@propelize.com</td>
+          <td>Gestionnaire</td>
+          <td><span class="status-badge status-active">Actif</span></td>
+          <td class="actions">
+            <button class="action-btn edit-btn">✏️ Modifier</button>
+          </td>
+        </tr>
+        <tr>
+          <td>alain</td>
+          <td>alain@propelize.com</td>
+          <td>Conducteur</td>
+          <td><span class="status-badge status-inactive">Inactif</span></td>
+          <td class="actions">
+            <button class="action-btn edit-btn">✏️ Modifier</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <script>
+    // Edition en ligne des utilisateurs
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const row = this.closest('tr');
+        if (row.classList.contains('editing')) return;
+        row.classList.add('editing');
+        const cells = row.querySelectorAll('td');
+        const [nom, email, role, statut] = [cells[0], cells[1], cells[2], cells[3]];
+        const oldValues = [nom.textContent, email.textContent, role.textContent, statut.textContent];
+        nom.innerHTML = `<input type="text" value="${nom.textContent}">`;
+        email.innerHTML = `<input type="email" value="${email.textContent}">`;
+        role.innerHTML = `<select><option>Conducteur</option><option>Gestionnaire</option></select>`;
+        role.querySelector('select').value = oldValues[2];
+        statut.innerHTML = `<select><option value="Actif">Actif</option><option value="Inactif">Inactif</option></select>`;
+        statut.querySelector('select').value = oldValues[3].includes('Actif') ? 'Actif' : 'Inactif';
+        const actions = cells[4];
+        actions.innerHTML = `<button class="action-btn save-btn">💾 Sauver</button> <button class="action-btn cancel-btn">✖ Annuler</button>`;
+        actions.querySelector('.save-btn').addEventListener('click', function() {
+          nom.textContent = nom.querySelector('input').value;
+          email.textContent = email.querySelector('input').value;
+          role.textContent = role.querySelector('select').value;
+          const newStatus = statut.querySelector('select').value;
+          statut.innerHTML = `<span class="status-badge status-${newStatus === 'Actif' ? 'active' : 'inactive'}">${newStatus}</span>`;
+          actions.innerHTML = `<button class="action-btn edit-btn">✏️ Modifier</button>`;
+          row.classList.remove('editing');
+          actions.querySelector('.edit-btn').addEventListener('click', arguments.callee.caller);
+        });
+        actions.querySelector('.cancel-btn').addEventListener('click', function() {
+          nom.textContent = oldValues[0];
+          email.textContent = oldValues[1];
+          role.textContent = oldValues[2];
+          statut.innerHTML = oldValues[3];
+          actions.innerHTML = `<button class="action-btn edit-btn">✏️ Modifier</button>`;
+          row.classList.remove('editing');
+          actions.querySelector('.edit-btn').addEventListener('click', arguments.callee.caller);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

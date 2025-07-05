@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liste des Véhicules</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+      margin: 0;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      background: rgba(255,255,255,0.95);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      padding: 2rem;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #667eea;
+    }
+    .btn {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+    .btn:hover {
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    th {
+      background: rgba(102, 126, 234, 0.1);
+      color: #333;
+    }
+    tr:hover {
+      background: rgba(102, 126, 234, 0.05);
+    }
+    .status-badge {
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    .status-active {
+      background: #c6f6d5;
+      color: #22543d;
+    }
+    .status-maintenance {
+      background: #fbb6ce;
+      color: #742a2a;
+    }
+    .status-inactive {
+      background: #fed7cc;
+      color: #744210;
+    }
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .action-btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    .edit-btn {
+      background: #667eea;
+      color: white;
+    }
+    .delete-btn {
+      background: #e53e3e;
+      color: white;
+    }
+    .action-btn:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Liste des Véhicules</h2>
+    <a href="dashbord.html" class="btn">Retour au Dashboard</a>
+    <table>
+      <thead>
+        <tr>
+          <th>Marque</th>
+          <th>Modèle</th>
+          <th>Plaque</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Toyota</td>
+          <td>Camry</td>
+          <td>CM-1234-AB</td>
+          <td><span class="status-badge status-active">Actif</span></td>
+          <td class="actions">
+            <button class="action-btn edit-btn">✏️</button>
+            <button class="action-btn delete-btn">🗑️</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Honda</td>
+          <td>Civic</td>
+          <td>CM-5678-CD</td>
+          <td><span class="status-badge status-maintenance">Maintenance</span></td>
+          <td class="actions">
+            <button class="action-btn edit-btn">✏️</button>
+            <button class="action-btn delete-btn">🗑️</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Ford</td>
+          <td>Focus</td>
+          <td>CM-9012-EF</td>
+          <td><span class="status-badge status-active">Actif</span></td>
+          <td class="actions">
+            <button class="action-btn edit-btn">✏️</button>
+            <button class="action-btn delete-btn">🗑️</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Nissan</td>
+          <td>Sentra</td>
+          <td>CM-3456-GH</td>
+          <td><span class="status-badge status-inactive">Inactif</span></td>
+          <td class="actions">
+            <button class="action-btn edit-btn">✏️</button>
+            <button class="action-btn delete-btn">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <script>
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        alert('Fonction d\'édition - À implémenter');
+      });
+    });
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        if (confirm('Êtes-vous sûr de vouloir supprimer ce véhicule ?')) {
+          this.closest('tr').remove();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
