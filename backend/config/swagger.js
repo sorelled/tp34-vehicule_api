@@ -7,7 +7,7 @@ const options = {
     info: {
       title: 'API Véhicules',
       version: '1.0.0',
-      description: 'Documentation de l’API de gestion des véhicules',
+      description: 'Documentation de l’API de gestion des véhicules et utilisateurs',
     },
     servers: [
       {
@@ -15,7 +15,7 @@ const options = {
       },
     ],
   },
-  apis: ['./backend/routes/vehicleRoutes.js'], // Correction du chemin
+  apis: ['./backend/routes/vehicleRoutes.js', './backend/routes/userRoutes.js'], // Ajout du fichier userRoutes.js
 };
 
 const swaggerSpec = swaggerJSDoc(options);
