@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const vehicleRoutes = require('./routes/vehicleRoutes');
-const userRoutes = require('./routes/userRoutes');
+const vehicleRoutes = require('./backend/routes/vehicleRoutes');
+const userRoutes = require('./backend/routes/userRoutes');
 const { swaggerUi, swaggerSpec } = require('./backend/config/swagger');
 
 const app = express();
