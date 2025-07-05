@@ -14,7 +14,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test":  "vitest",
+    "test": "vitest",
     "test:watch": "vitest watch",
     "coverage": "vitest run --coverage",
     "start": "node backend/app.js",

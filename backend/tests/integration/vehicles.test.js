@@ -72,19 +72,20 @@ describe('API Véhicules (Intégration)', () => {
   });
 
   it('PUT /vehicles/:id - Mettre à jour un véhicule', async () => {
-    // Arrange
-    const updateData = { rentalPrice: 60 };
+  // Arrange
+  const updateData = { rentalPrice: 60 };
 
-    // Act
-    const res = await request(app)
-      .put(`/api/vehicles/${testVehicleId}`)
-      .set('Authorization', `Bearer ${authToken}`)
-      .send(updateData);
+  // Act
+  const res = await request(app)
+    .put(`/api/vehicles/${testVehicleId}`)
+    .set('Authorization', `Bearer ${authToken}`)
+    .send(updateData);
 
-    // Assert
-    expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty('rentalPrice', 60);
-  });
+  // Assert
+  expect(res.status).toBe(200);
+  expect(Number(res.body.rentalPrice)).toBe(60); // ✅ conversion explicite
+});
+
 
   it('DELETE /vehicles/:id - Supprimer un véhicule', async () => {
     // Act

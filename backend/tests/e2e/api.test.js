@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeAll, afterAll } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
-import pool from '../../backend/config/db';
+import pool from '../../config/db';
 /**
  * Tests End-to-End (E2E) - Flux complet de l'API
  * 

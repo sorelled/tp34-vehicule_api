@@ -1,8 +1,13 @@
-import { describe, it, expect } from 'vitest';
-import Vehicle from '../../../models/Vehicle';
-import pool from '../../../config/db';
+import { describe, it, expect, afterEach } from 'vitest';
+import Vehicle from '../../../models/Vehicle.js'; // ← Assure-toi que l'extension .js est bien là si tu utilises ES Modules
+import pool from '../../../config/db.js';         // ← Idem ici
 
 describe('Modèle Vehicle', () => {
+  afterEach(async () => {
+    // Nettoyage après chaque test pour éviter les conflits
+    await pool.query('DELETE FROM vehicles WHERE registrationNumber = ?', ['TEST123']);
+  });
+
   it('doit créer un véhicule', async () => {
     // Arrange
     const mockVehicle = {
@@ -18,9 +23,7 @@ describe('Modèle Vehicle', () => {
 
     // Assert
     expect(id).toBeDefined();
-
-    // Nettoyage
-    await pool.query('DELETE FROM vehicles WHERE id = ?', [id]);
+    expect(typeof id).toBe('number');
   });
 
   it('doit rejeter une création invalide', async () => {
