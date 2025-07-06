@@ -10,6 +10,21 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_DATABASE: vehicledb
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    
     steps:
       - name: Cloner le dépôt
         uses: actions/checkout@v3
@@ -19,8 +34,20 @@ jobs:
         with:
           node-version: '18'
 
-      - name:  Installer les dépendances
+      - name: Installer les dépendances
         run: npm install
+
+      - name:  Créer un fichier .env pour les tests
+        run: |
+          echo "DB_HOST=127.0.0.1" >> .env
+          echo "DB_USER=root" >> .env
+          echo "DB_PASSWORD=secret" >> .env
+          echo "DB_NAME=vehicledb" >> .env
+          echo "JWT_SECRET=supersecret" >> .env
+          echo "PORT=3000" >> .env
+
+      - name: Donner les droits d’exécution à Vitest
+        run: chmod +x ./node_modules/.bin/vitest
 
       - name: Lancer les tests
         run: npm run test
